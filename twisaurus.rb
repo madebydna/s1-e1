@@ -10,7 +10,7 @@ class Twisaurus
   
   GREETING = "Hi %s! Look up synonyms by sending me a PM with a word of your choice, i.e.: word [verb, noun, adjective, adverb]"
   
-  attr_reader :twitter
+  attr_reader :twitter, :last_message_retrieved
   
   def initialize
     @config = YAML.load(File.open("config/bot.yml"))
@@ -18,7 +18,9 @@ class Twisaurus
     oauth.authorize_from_access(@config['access_token'], @config['access_secret'])
 
     @twitter = Twitter::Base.new(oauth)
+    @last_message_retrieved = nil
   end
+
 
   def run
     max = @config['max_interval'] #300
@@ -29,13 +31,14 @@ class Twisaurus
       log.info "Entered loop at #{Time.now}"
       updates = 0
       updates += to_follow.length
-      updates += twitter.direct_messages.length
+      updates += check_for_new_messages
       
       #interval increments if there are no updates
       interval = updates > 0 ? @config['min_interval'] : [interval + step, max].min
       
       auto_follow if !to_follow.empty?
-      reply if twitter.direct_messages
+      reply if @num_messages > 0
+      
       log.debug "Bot sleeping for #{interval}s"
       sleep interval
     end
@@ -43,6 +46,14 @@ class Twisaurus
 
   def to_follow
     twitter.follower_ids - twitter.friend_ids
+  end
+  
+  # helper method to avoid hitting the API more than necessary when checking whether there are any messages
+  # also: set processed[:message] to the ID of the most recent message, so we avoid later on picking up the 
+  # same message twice
+  def check_for_new_messages
+    messages = twitter.direct_messages(:since_id => last_message_retrieved)
+    @num_messages = messages.length
   end
   
   def auto_follow
@@ -57,15 +68,20 @@ class Twisaurus
 
   def reply
     # for responding to DM
-    twitter.direct_messages.each do |dm|
+    log.debug "IN REPLY: last message ID is: #{last_message_retrieved}"
+    options = {}
+    options[:since_id] = last_message_retrieved
+    # needs to reversed, because first item in array is latest message
+    messages = twitter.direct_messages(options).reverse
+    messages.each do |dm|
       log.info "Received PM from #{dm.sender_screen_name}: #{dm.text}"
       t = Thesaurus.new(WordnikService.new)
       answer = t.lookup_synonyms(dm.text)
       log.info "Answer was #{answer}"
       # send DM with answer
       twitter.direct_message_create(dm.sender_id, answer)
-      # delete DM
-      twitter.direct_message_destroy(dm.id)
+      # reset last message ID
+      @last_message_retrieved = dm.id
     end
   end
   
