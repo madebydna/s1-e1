@@ -18,14 +18,17 @@ class Twisaurus
     oauth.authorize_from_access(@config['access_token'], @config['access_secret'])
 
     @twitter = Twitter::Base.new(oauth)
-    @last_message_retrieved = nil
+    
+    # make sure we don't fetch messages sent before the bot is launched
+    old_messages = @twitter.direct_messages(:count => 1)
+    @last_message_retrieved = old_messages.first.id if old_messages.length > 0
   end
 
 
   def run
     max = @config['max_interval'] #300
     step = @config['interval_step'] #10
-    interval = @config['min_interval'] #120
+    interval = @config['min_interval'] #120 
     
     loop do
       log.info "Entered loop at #{Time.now}"
