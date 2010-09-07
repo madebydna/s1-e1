@@ -2,5 +2,8 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'test_helper')) unles
 
 class TwisaurusTest < Test::Unit::TestCase 
   
+  test "the truth"
+    assert true
+  end
   
 end

@@ -26,8 +26,6 @@ class Thesaurus
   
   def parse_result(response)
     # response is array of hashes
-    # [{"wordstrings":["old","past"],"relType":"equivalent"},
-    # {"wordstrings":["old","versed","magisterial","obsolete","old-fashioned","antiquated","former","venerable"],"relType":"synonym"}]
     synonyms = []
     response.map do |wordshash|
       synonyms << wordshash["wordstrings"] if REL_TYPES.include?(wordshash["relType"])
@@ -46,7 +44,7 @@ class Thesaurus
   
   def shorten_string(str)
     str = str[0..140]
-    #lose the last comma if there
+    #lose the last comma if it is there
     if str.strip[/,$/]
       str = str.chop
     end

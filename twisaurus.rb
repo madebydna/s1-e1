@@ -5,7 +5,6 @@ require 'logger'
 require File.join(File.dirname(__FILE__), 'thesaurus')
 require File.join(File.dirname(__FILE__), 'wordnik_service')
 
-
 class Twisaurus
   
   GREETING = "Hi %s! Look up synonyms by sending me a PM with a word of your choice, i.e.: word [verb, noun, adjective, adverb]"
