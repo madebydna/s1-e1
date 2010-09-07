@@ -1,0 +1,4 @@
+.rvmrc
+.bundle
+Gemfile.lock
+config/bot.yml

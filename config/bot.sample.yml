@@ -1,0 +1,8 @@
+consumer_token: YOUR_CONSUMER_TOKEN
+consumer_secret: YOUR_CONSUMER_SECRET
+access_token: YOUR_ACCESS_TOKEN
+access_secret: YOUR_ACCESS_SECRET
+wordnik_api_key: YOUR_WORDNIK_API_KEY
+min_interval: 120
+max_interval: 300
+interval_step: 10

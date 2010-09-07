@@ -1,0 +1,48 @@
+[
+    {
+        "relType": "form",
+        "wordstrings": [
+            "abated",
+            "abating"
+        ]
+    },
+
+    {
+        "relType": "synonym",
+        "wordstrings": [
+            "depress",
+            "intermit",
+            "lower",
+            "relax",
+            "abolish",
+            "decrease"
+        ]
+    },
+
+    {
+        "relType": "verb-form",
+        "wordstrings": [
+            "abates",
+            "abated",
+            "abating"
+        ]
+    },
+
+    {
+        "relType": "cross-reference",
+        "wordstrings": [
+            "abating process",
+            "abated arms"
+        ]
+    },
+
+    {
+        "relType": "antonym",
+        "wordstrings": [
+            "preserver",
+            "increase",
+            "intensify",
+            "build"
+        ]
+    }
+]
