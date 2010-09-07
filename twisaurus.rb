@@ -51,8 +51,6 @@ class Twisaurus
   end
   
   # helper method to avoid hitting the API more than necessary when checking whether there are any messages
-  # also: set processed[:message] to the ID of the most recent message, so we avoid later on picking up the 
-  # same message twice
   def check_for_new_messages
     messages = twitter.direct_messages(:since_id => last_message_retrieved)
     @num_messages = messages.length
@@ -82,7 +80,7 @@ class Twisaurus
       log.info "Answer was #{answer}"
       # send DM with answer
       twitter.direct_message_create(dm.sender_id, answer)
-      # reset last message ID
+      # reset last message ID to avoid picking up the same message again
       @last_message_retrieved = dm.id
     end
   end

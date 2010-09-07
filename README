@@ -25,4 +25,4 @@ These are the directions to see it in action:
 
 - The Wordnik API does not alway work as advertised. For example a nonsense string should elicit a certain JSON structure that clearly indicates that the word was not found. This should be different from the case when no synonyms were found for a word. In reality both cases return an empty array.
 - The synonyms returned are often not synonyms of the word at all, but only something vaguely related.
--  
+- The API indicates that filtering by word types is possible (noun, verb, adjective, adverb), but that also doesn't seem to work as supposed to. 
